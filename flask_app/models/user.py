@@ -9,7 +9,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class User:
     def __init__(self,data):
-        self.id = data['data']
+        self.id = data['id']
         self.first_name = data['first_name']
         self.last_name = data['last_name']
         self.email = data['email']
@@ -30,6 +30,20 @@ class User:
 
         query = "INSERT INTO users (first_name, last_name, email, password) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s)"
         return connectToMySQL('recipes').query_db(query, hashed_dict)
+
+    @classmethod
+    def get_by_email(cls, data):
+        query = 'SELECT * FROM users WHERE email = %(email)s'
+        result = connectToMySQL('recipes').query_db(query, data)
+        if result:
+            return cls(result[0])
+    
+    @classmethod
+    def get_by_id(cls, data):
+        query = 'SELECT * FROM users WHERE id = %(id)s'
+        result = connectToMySQL('recipes').query_db(query, data)
+        if result:
+            return cls(result[0])
 
     @staticmethod
     def reg_is_valid(user):
@@ -58,5 +72,17 @@ class User:
             flash("Password does not match")
 
         return is_valid
+    
+    @staticmethod
+    def log_valid(data):
+        user = User.get_by_email(data)
+
+        if not user:
+            return False
+        
+        if not bcrypt.check_password_hash(user.password, data["password"]):
+            return False
+
+        return True
         
         

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Recipe</title>
+</head>
+<body>
+    <h1>Welcome {{ session["user_id"]}}!</h1>
+    <h4>This is the recipe</h4>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/logout">Logout</a>
+    <br>
+    <div>
+        <h2>{{recipe.name}}</h2>
+        <p>Description: {{recipe.description}}</p>
+        <p>Instructions: {{recipe.instructions}}</p>
+        <p>Created on: {{recipe.date_made_on}}</p>
+        
+    </div>
+    
+</body>
+</html>
